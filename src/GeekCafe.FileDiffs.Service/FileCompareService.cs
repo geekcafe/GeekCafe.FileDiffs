@@ -8,8 +8,12 @@ namespace GeekCafe.FileDiffs.Service
         
         public static bool IsEqual(string pathLeft, string pathRight)
         {
-            byte[] fileLeft = File.ReadAllBytes(pathLeft);
-            byte[] fileRight = File.ReadAllBytes(pathRight);
+            byte[] fileLeft = (pathLeft.Length > 0 &&  File.Exists(pathLeft)) ? File.ReadAllBytes(pathLeft) : null;
+            byte[] fileRight = (pathRight.Length > 0 &&  File.Exists(pathRight)) ? File.ReadAllBytes(pathRight) : null;
+
+            if (fileLeft == null && fileRight == null) return true;
+            if (fileLeft == null || fileRight == null) return false;
+
             if (fileLeft.Length == fileRight.Length)
             {
                 for (int i = 0; i < fileLeft.Length; i++)
